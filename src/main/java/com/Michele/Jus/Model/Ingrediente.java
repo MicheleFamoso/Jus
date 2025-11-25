@@ -1,6 +1,7 @@
 package com.Michele.Jus.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,5 +15,7 @@ public class Ingrediente {
     private int quantita;
     private String unita;
     @ManyToOne
+    @JoinColumn(name = "ricetta_id")
+    @JsonIgnore
     private Ricetta ricetta;
 }

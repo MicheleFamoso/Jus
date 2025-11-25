@@ -17,7 +17,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue
-    private String id;
+    private int id;
     private String cognome;
     private String nome;
     @Column(unique = true)

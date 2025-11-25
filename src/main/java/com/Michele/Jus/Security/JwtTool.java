@@ -31,7 +31,7 @@ public class JwtTool {
 
     public String createToken(User user){
         return    Jwts.builder().issuedAt(new Date()).expiration(new Date(System.currentTimeMillis()+ durata)).//Data + durata
-                subject(String.valueOf(user.getId())).
+                subject(user.getId()+"").
                 signWith(Keys.hmacShaKeyFor(chiaveSegreta.getBytes())).compact() ;//Chiave
     }
 
