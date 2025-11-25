@@ -2,6 +2,7 @@ package com.Michele.Jus.Controller;
 
 
 import com.Michele.Jus.Dto.RicettaDto;
+import com.Michele.Jus.Exception.NotFoundException;
 import com.Michele.Jus.Exception.ValidationException;
 import com.Michele.Jus.Model.Ricetta;
 import com.Michele.Jus.Service.RicettaService;
@@ -38,7 +39,34 @@ public class RicettaController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy) {
-            return ricettaService.getAllRicette(page,size,sortBy);
-            }
+        return ricettaService.getAllRicette(page, size, sortBy);
+    }
 
+    @GetMapping("/{id}")
+    public Ricetta getRicettaByid(@PathVariable int id) throws NotFoundException {
+        return ricettaService.getRicetta(id);
+    }
+
+    @PutMapping("/{id}")
+    public Ricetta updateRicetta(@PathVariable int id,@RequestBody @Validated RicettaDto ricettaDto, BindingResult bindingResult) throws ValidationException{
+        if (bindingResult.hasErrors()){
+            throw new ValidationException(bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).reduce("",(e, c )->e+c));
+        }
+        return ricettaService.updateRicetta(id,ricettaDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRicetta(@PathVariable int id) throws NotFoundException{
+        ricettaService.deleteRicetta(id);
+    }
+
+    @GetMapping("/search")
+    public Page<Ricetta> searchRicette( @RequestParam String nomePiatto,
+                                        @RequestParam String nomeIngrediente,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int size,
+                                        @RequestParam(defaultValue = "id") String sortBy){
+        return ricettaService.findByName(nomePiatto,nomeIngrediente,page,size,sortBy);
+    }
 }
