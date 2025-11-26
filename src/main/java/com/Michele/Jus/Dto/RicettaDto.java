@@ -26,6 +26,6 @@ public class RicettaDto {
     private List<Ingrediente> ingredienti;
     @NotEmpty(message="Inserire procedimento")
     private String procedimento;
-    private int userId;
+
 
 }

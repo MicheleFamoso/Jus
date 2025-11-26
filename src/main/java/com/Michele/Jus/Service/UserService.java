@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public User getUser(int id) throws NotFoundException {
-        return   userRepository.findById(id).orElseThrow(()-> new NotFoundException("Università non trovata"));
+        return   userRepository.findById(id).orElseThrow(()-> new NotFoundException("Utente con" + id + "non trovato"));
     }
 
     public User updateUser(int id,UserDto userDto) throws NotFoundException {
@@ -57,5 +57,9 @@ public class UserService {
     public void deleteUser(int id) throws NotFoundException {
         User user = getUser(id);
         userRepository.delete(user);
+    }
+
+    public User findByUsername(String Username){
+        return userRepository.findByUsername(Username).orElseThrow(()-> new NotFoundException("Utente non trovato"));
     }
 }

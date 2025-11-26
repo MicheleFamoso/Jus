@@ -24,11 +24,10 @@ public class RicettaService {
 
     @Autowired
     RicettaRepository ricettaRepository;
-    @Autowired
-    UserService userService;
 
-    public Ricetta saveRicetta (RicettaDto ricettaDto){
-        User user = userService.getUser(ricettaDto.getUserId());
+
+    public Ricetta saveRicetta (RicettaDto ricettaDto, User user){
+
         Ricetta ricetta = new Ricetta();
         ricetta.setUser(user);
         ricetta.setNomePiatto(ricettaDto.getNomePiatto());
