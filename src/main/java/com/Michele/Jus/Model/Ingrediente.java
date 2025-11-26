@@ -8,6 +8,7 @@ import lombok.Data;
 @Entity
 @Data
 public class Ingrediente {
+   // @GeneratedValue(strategy = GenerationType.IDENTITY) da usare per mySql
     @Id
     @GeneratedValue
     private int id;
