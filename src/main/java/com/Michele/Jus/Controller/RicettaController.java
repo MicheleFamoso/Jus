@@ -49,6 +49,31 @@ public class RicettaController {
         return ricettaService.getAllRicette(page, size, sortBy);
     }
 
+    @GetMapping("/myRecipe")
+    public Page<Ricetta> getMyRicette(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(defaultValue = "id") String sortBy,
+                                      Principal principal){
+        User user = userService.findByUsername(principal.getName());
+        return ricettaService.getMyRicette(page,size,sortBy,user);
+    }
+
+    @GetMapping("/findByUser/{user}")
+    public Page<Ricetta> getRicetteByUsername(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(defaultValue = "id") String sortBy,
+                                      @PathVariable String username){
+        return ricettaService.getRicetteByUsername(page,size,sortBy,username);
+    }
+
+    @GetMapping("/findByPortata/{portata}")
+    public Page<Ricetta> getRicetteByPortata(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size,
+                                              @RequestParam(defaultValue = "id") String sortBy,
+                                              @PathVariable String portata){
+        return ricettaService.findByPortata(portata,page,size,sortBy);
+    }
+
     @GetMapping("/{id}")
     public Ricetta getRicettaByid(@PathVariable int id) throws NotFoundException {
         return ricettaService.getRicetta(id);

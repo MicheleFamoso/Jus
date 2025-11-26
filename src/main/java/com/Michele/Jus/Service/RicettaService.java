@@ -56,6 +56,19 @@ public class RicettaService {
         return ricettaRepository.findAll(pageable);
     }
 
+    public Page<Ricetta> getMyRicette (int page,int size, String sortBy, User user){
+        Pageable pageable  = PageRequest.of(page,size, Sort.by(sortBy));
+         String userName = user.getUsername();
+        return ricettaRepository.findByUserUsername(userName,pageable);
+    }
+
+    public Page<Ricetta> getRicetteByUsername (int page,int size, String sortBy,String username){
+        Pageable pageable  = PageRequest.of(page,size, Sort.by(sortBy));
+
+        return ricettaRepository.findByUserUsername(username,pageable);
+    }
+
+
     public Ricetta getRicetta(int id) throws NotFoundException{
         return ricettaRepository.findById(id).orElseThrow(
                 ()-> new NotFoundException("Ricetta con " + id + " non trovata.")
@@ -93,5 +106,10 @@ public class RicettaService {
     public Page<Ricetta> findByName(String nomePiatto,String nomeIngrediente,int page,int size, String sortBy){
         Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
         return ricettaRepository.findByNomePiattoOrIngredientiNomeContaining(nomePiatto,nomeIngrediente,pageable);
+    }
+
+    public Page<Ricetta> findByPortata(String portata,int page,int size, String sortBy ){
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
+        return ricettaRepository.findByPortataContaining(portata,pageable);
     }
 }
