@@ -32,7 +32,7 @@ public class SecurityConfig {
         httpSecurity.sessionManagement(http->http.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         //Cors
         httpSecurity.cors(Customizer.withDefaults());
-        //Permette l'autorizzazione ad eventuali endpoint
+        //Permette l'autorizzazione a eventuali endpoint
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/auth/**").permitAll());
         //httpSecurity.authorizeHttpRequests(http->http.requestMatchers(HttpMethod.GET,"/studenti/**").permitAll());
         //permette i metodi
@@ -52,7 +52,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         // Per sviluppo: permette tutto
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*")); // permette tutte le intestazioni
         configuration.setAllowCredentials(true); // se vuoi inviare cookie/autenticazione
