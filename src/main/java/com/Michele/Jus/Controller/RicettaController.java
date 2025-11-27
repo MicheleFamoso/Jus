@@ -2,6 +2,7 @@ package com.Michele.Jus.Controller;
 
 
 import com.Michele.Jus.Dto.RicettaDto;
+import com.Michele.Jus.Dto.RicettaPageDto;
 import com.Michele.Jus.Exception.NotFoundException;
 import com.Michele.Jus.Exception.ValidationException;
 import com.Michele.Jus.Model.Ricetta;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -101,4 +103,15 @@ public class RicettaController {
                                         @RequestParam(defaultValue = "id") String sortBy){
         return ricettaService.findByName(nomePiatto,nomeIngrediente,page,size,sortBy);
     }
+    //--------------------------------------------------------------------------------------------//
+
+    @GetMapping("/pagine")
+    public ResponseEntity<RicettaPageDto> getRicette(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        RicettaPageDto ricettePageDto = ricettaService.getRicettePage(page, size);
+        return ResponseEntity.ok(ricettePageDto);
+    }
+
 }

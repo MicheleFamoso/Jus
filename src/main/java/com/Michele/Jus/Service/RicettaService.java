@@ -1,9 +1,9 @@
 package com.Michele.Jus.Service;
 
 
-import com.Michele.Jus.Dto.IngredienteDto;
-import com.Michele.Jus.Dto.RicettaDto;
+import com.Michele.Jus.Dto.*;
 import com.Michele.Jus.Exception.NotFoundException;
+import com.Michele.Jus.Mapper.RicettaMapper;
 import com.Michele.Jus.Model.Ingrediente;
 import com.Michele.Jus.Model.Ricetta;
 import com.Michele.Jus.Model.User;
@@ -24,6 +24,8 @@ public class RicettaService {
 
     @Autowired
     RicettaRepository ricettaRepository;
+    @Autowired
+    RicettaMapper ricettaMapper;
 
 
     public Ricetta saveRicetta (RicettaDto ricettaDto, User user){
@@ -111,5 +113,21 @@ public class RicettaService {
     public Page<Ricetta> findByPortata(String portata,int page,int size, String sortBy ){
         Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
         return ricettaRepository.findByPortataContaining(portata,pageable);
+    }
+
+
+    //--------------------------------------------------------//
+
+    public RicettaPageDto getRicettePage(int page, int size){
+        Page<Ricetta> ricettaPage = ricettaRepository.findAll(PageRequest.of(page,size));
+        List<RicettaClientDto> ricetteDto = ricettaPage.getContent().stream()
+                .map(ricettaMapper::ricettaToDo).toList();
+        return new RicettaPageDto(
+                ricettaPage.getNumber(),
+                ricettaPage.getSize(),
+                ricettaPage.getTotalElements(),
+                ricettaPage.getTotalPages(),
+                ricetteDto
+        );
     }
 }
