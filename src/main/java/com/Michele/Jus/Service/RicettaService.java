@@ -122,6 +122,7 @@ public class RicettaService {
         Page<Ricetta> ricettaPage = ricettaRepository.findAll(PageRequest.of(page,size));
         List<RicettaClientDto> ricetteDto = ricettaPage.getContent().stream()
                 .map(ricettaMapper::ricettaToDo).toList();
+
         return new RicettaPageDto(
                 ricettaPage.getNumber(),
                 ricettaPage.getSize(),
