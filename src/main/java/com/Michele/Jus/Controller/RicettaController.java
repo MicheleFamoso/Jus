@@ -7,6 +7,7 @@ import com.Michele.Jus.Exception.NotFoundException;
 import com.Michele.Jus.Exception.ValidationException;
 import com.Michele.Jus.Model.Ricetta;
 import com.Michele.Jus.Model.User;
+import com.Michele.Jus.Security.CustomUserDetails;
 import com.Michele.Jus.Service.UserService;
 import com.Michele.Jus.Service.RicettaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +35,12 @@ public class RicettaController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Ricetta saveRicetta(@RequestBody @Validated RicettaDto ricettaDto, BindingResult bindingResult, Principal principal) throws ValidationException {
+    public Ricetta saveRicetta(@RequestBody @Validated RicettaDto ricettaDto, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetails user) throws ValidationException {
         if (bindingResult.hasErrors()){
             throw new ValidationException(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage).reduce("",(e, c )->e+c));
         }
-        User user= userService.findByUsername(principal.getName());
-        return ricettaService.saveRicetta(ricettaDto, user);
+        return ricettaService.saveRicetta(ricettaDto, user.getId());
     }
 
     @GetMapping

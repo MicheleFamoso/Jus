@@ -26,10 +26,11 @@ public class RicettaService {
     RicettaRepository ricettaRepository;
     @Autowired
     RicettaMapper ricettaMapper;
+    @Autowired
+    UserRepository userRepository;
 
-
-    public Ricetta saveRicetta (RicettaDto ricettaDto, User user){
-
+    public Ricetta saveRicetta (RicettaDto ricettaDto, int userId){
+        User user = userRepository.getReferenceById(userId);
         Ricetta ricetta = new Ricetta();
         ricetta.setUser(user);
         ricetta.setNomePiatto(ricettaDto.getNomePiatto());
